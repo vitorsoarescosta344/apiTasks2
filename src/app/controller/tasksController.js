@@ -1,0 +1,61 @@
+const knex = require('knex')({
+    client: 'mysql',
+    connection: {
+      host : 'database-2.cfb2fyrhpdpy.us-east-2.rds.amazonaws.com',
+      user : 'admin',
+      password : '33333386',
+      database : 'tasks'
+    },
+  });
+
+class TaskController {
+    async getTasks(req, res){
+        try{
+            const Tasks = knex('tasks').insert({name: createUser.name, email: createUser.email, password})
+            .where({userId: req.user.id})
+            .where('estimatedAt', '<=', date)
+            .orderBy('estimatedAt')
+            .then(tasks => res.json(tasks))
+        }catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+    }
+    async save (req, res){
+        if(!req.body.desc.trim()){
+            return res.status(400).send('Descrição é um campo inválido')
+        }
+
+        req.body.userId = req.user.id
+
+        knex('tasks')
+            .insert(req.body)
+            .then(_ => res.status(204).send())
+            .catch(err => res.status(400).json(err))
+    }
+
+    async remove (req, res, doneAt){
+        knex('tasks')
+        .where({id: req.params.io, userId: req.user.id})
+        .update({doneAt})
+        .then(_ => res.status(204).send())
+        .catch(err => res.status(400).json(err))
+    }
+    async toggleTask (req, res){
+        knex('tasks')
+            .where({id: req.params.id, userId: req.user.id})
+            .first()
+            .then(task => {
+                if(!task){
+                    const msg = `Task com id ${req.params.id}`
+                    return res.status(400).send(msg)
+                }
+
+                const doneAt = task.doneAt ? null : new Date()
+                updateTaskDoneAt(req, res, doneAt)
+            })
+            .catch(err => res.status(400).json(err))
+    }
+}
+
+module.exports = new TaskController();
