@@ -1,4 +1,3 @@
-const {user} = require('../models/')
 const bcrypt = require('bcrypt-nodejs')
 const knex = require('knex')({
     client: 'mysql',
