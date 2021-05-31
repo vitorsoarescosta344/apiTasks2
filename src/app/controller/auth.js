@@ -1,3 +1,4 @@
+const { authSecret } = require('../../../.env')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt-nodejs')
 const knex = require('knex')({
@@ -10,8 +11,9 @@ const knex = require('knex')({
     },
   });
 
+
 class AuthController{
-    signin(req, res){
+    async signin(req, res){
         if(!req.body.email || !req.body.password){
             return res.status(400).send('Dados incompletos')
         }
@@ -21,7 +23,6 @@ class AuthController{
             .first()
             .catch(err => res.status(400).json(err))
         if(user){
-            try{
                 bcrypt.compare(req.body.password, user.password, (err, isMatch)=>{
                     if(err || !isMatch){
                         return res.status(401).send()
@@ -30,12 +31,9 @@ class AuthController{
                     res.json({
                         name: user.name,
                         email: user.email,
-                        token: jwt.encode(payload, 12345678)
+                        token: jwt.encode(payload, authSecret)
                     })
-                })
-            }catch (err){
-                console.log(err)
-            }
+                }).catch(err => res.status(400).json(err))
         }else {
             res.status(400).send('Problemas com o login do usuário')
         }
