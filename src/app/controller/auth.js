@@ -19,18 +19,23 @@ class AuthController{
         const user = await knex('users')
             .whereRaw("LOWER(email) = LOWER(?)", req.body.email)
             .first()
+            .catch(err => res.status(400).json(err))
         if(user){
-            bcrypt.compare(req.body.password, user.password, (err, isMatch)=>{
-                if(err || !isMatch){
-                    return res.status(401).send()
-                }
-                const payload = {id: user.id}
-                res.json({
-                    name: user.name,
-                    email: user.email,
-                    token: jwt.encode(payload, 12345678)
+            try{
+                bcrypt.compare(req.body.password, user.password, (err, isMatch)=>{
+                    if(err || !isMatch){
+                        return res.status(401).send()
+                    }
+                    const payload = {id: user.id}
+                    res.json({
+                        name: user.name,
+                        email: user.email,
+                        token: jwt.encode(payload, 12345678)
+                    })
                 })
-            })
+            }catch (err){
+                console.log(err)
+            }
         }else {
             res.status(400).send('Problemas com o login do usuário')
         }
