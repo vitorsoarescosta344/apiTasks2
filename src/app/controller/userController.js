@@ -28,6 +28,7 @@ class UserController {
                 }
                 const Users = knex('users').insert({name: createUser.name, email: createUser.email, password})
                                 .then(_ => res.status(204).send())
+                                .catch(err => res.status(400).json(err))
             })
         } catch (err) {
             return res.status(400).json({ error: err.message });
