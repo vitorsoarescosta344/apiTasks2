@@ -3,9 +3,16 @@ const UserController = require('./app/controller/userController');
 const TaskController = require('./app/controller/tasksController');
 const AuthController = require('./app/controller/auth')
 const Passport = require('./app/controller/passport')
+const cors = require('cors')
 
 const routes = Router();
 
+routes.use((req, res, next)=>{
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', '*')
+    res.header('Access-Control-Allow-Methods', '*')
+    next()
+})
 
 routes.post('/signup', UserController.save);
 

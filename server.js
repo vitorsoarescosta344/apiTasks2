@@ -9,6 +9,7 @@ class App {
     this.middlewares();
     this.routes();
 
+
     this.express.listen(PORT, () =>
       console.log(`Sua API REST está funcionando na porta ${PORT} `)
     );
@@ -18,6 +19,8 @@ class App {
   middlewares() {
     this.express.use(express.json());
   }
+
+  
 
   routes() {
     this.express.use(require("./src/routes"));
