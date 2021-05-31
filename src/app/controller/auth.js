@@ -11,7 +11,7 @@ const knex = require('knex')({
   });
 
 class AuthController{
-    async signin(req, res){
+    signin(req, res){
         if(!req.body.email || !req.body.password){
             return res.status(400).send('Dados incompletos')
         }
