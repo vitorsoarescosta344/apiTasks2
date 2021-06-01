@@ -65,10 +65,9 @@ class TaskController {
                 }
 
                 const doneAt = task.doneAt ? null : new Date()
-                const doneAt2 = task.doneAt2 ? false : true || task.doneAt2 ? true : false
                 knex('tasks')
                     .where({id: req.params.id, userId: req.params.userId})
-                    .update({doneAt, doneAt2})
+                    .update({doneAt})
                     .then(_ => res.status(204).send(), console.log(doneAt))
                     .catch(err => res.status(400).json({error: "ocorreu um erro!"}))
             })
