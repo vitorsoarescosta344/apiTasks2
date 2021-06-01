@@ -16,7 +16,7 @@ class TaskController {
             const date = req.query.date ? req.query.date
                 :moment().endOf('day').toDate
             knex('tasks')
-                .where({ userId: req.user.id })
+                .where({ userId: req.body.id })
                 .where('estimatedAt', '<=', date)
                 .orderBy('estimatedAt')
                 .then(tasks => res.json(tasks))
