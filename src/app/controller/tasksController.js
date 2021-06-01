@@ -31,7 +31,7 @@ class TaskController {
             return res.status(400).send('Descrição é um campo inválido')
         }
 
-        req.body.userId = req.user.id
+        //req.body.userId = req.user.id
 
         knex('tasks')
             .insert(req.body)

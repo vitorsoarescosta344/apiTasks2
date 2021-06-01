@@ -22,7 +22,7 @@ routes.post('/signin', AuthController.signin)
 
 routes.route('/tasks/:date/:userId')
     .get(TaskController.getTasks)
-    .post(TaskController.save)
+routes.post('/tasks/', TaskController.save)
 routes.route('/tasks/:id')
     .delete(TaskController.remove)
 routes.route('/tasks/:id/toggle')
