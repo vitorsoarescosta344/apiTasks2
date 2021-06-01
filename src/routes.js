@@ -15,11 +15,12 @@ routes.use((req, res, next)=>{
 })
 
 routes.post('/signup', UserController.save);
+routes.get('/signup/:email', UserController.select);
 
 routes.post('/signin', AuthController.signin)
 
 
-routes.route('/tasks')
+routes.route('/tasks/:userId')
     .get(TaskController.getTasks)
     .post(TaskController.save)
 routes.route('/tasks/:id')

@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt-nodejs')
 const knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : 'database-2.cfb2fyrhpdpy.us-east-2.rds.amazonaws.com',
-      user : 'admin',
-      password : '33333386',
-      database : 'tasks'
+        host: 'database-2.cfb2fyrhpdpy.us-east-2.rds.amazonaws.com',
+        user: 'admin',
+        password: '33333386',
+        database: 'tasks'
     },
-  });
+});
 
 const obterHash = (password, callback) => {
     bcrypt.genSalt(10, (err, salt) => {
@@ -21,15 +21,28 @@ class UserController {
         try {
             obterHash(req.body.password, hash => {
                 const password = hash
-                const createUser ={
+                const createUser = {
                     name: req.body.name,
                     email: req.body.email.toLowerCase(),
                     password
                 }
-                const Users = knex('users').insert({name: createUser.name, email: createUser.email, password})
-                                .then(_ => res.status(204).send())
-                                .catch(err => res.status(400).json(err))
+                const Users = knex('users').insert({ name: createUser.name, email: createUser.email, password })
+                    .then(_ => res.status(204).send())
+                    .catch(err => res.status(400).json(err))
             })
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
+    }
+
+    async select(req, res) {
+        try {
+            const Users = await knex('users').select()
+                .where({ email: req.params.email })
+                .then(tasks => res.json(tasks))
+                
+                .catch(err => res.status(400).json(err))
+            //console.log(Users)
         } catch (err) {
             return res.status(400).json({ error: err.message });
         }

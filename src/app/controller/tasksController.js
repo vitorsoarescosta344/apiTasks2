@@ -14,11 +14,11 @@ class TaskController {
     async getTasks(req, res) {
         try {
             const date = req.query.date ? req.query.date
-                :moment().endOf('day').toDate
+                :moment().endOf('day').toDate()
             knex('tasks')
-                .where({ userId: req.body.id })
-                .where('estimatedAt', '<=', date)
-                .orderBy('estimatedAt')
+                .where({ userId: req.params.userId })
+                .where('estimateAt', '<=', date)
+                .orderBy('estimateAt')
                 .then(tasks => res.json(tasks))
                 .catch(err => res.status(400).json(err))
         } catch (err) {
