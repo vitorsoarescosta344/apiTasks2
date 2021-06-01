@@ -13,7 +13,7 @@ const moment = require('moment')
 class TaskController {
     async getTasks(req, res) {
         try {
-            const date = req.query.date ? req.query.date
+            const date = req.params.date ? req.params.date
                 :moment().endOf('day').toDate()
             knex('tasks')
                 .where({ userId: req.params.userId })

@@ -20,7 +20,7 @@ routes.get('/signup/:email', UserController.select);
 routes.post('/signin', AuthController.signin)
 
 
-routes.route('/tasks/:userId')
+routes.route('/tasks/:date/:userId')
     .get(TaskController.getTasks)
     .post(TaskController.save)
 routes.route('/tasks/:id')
