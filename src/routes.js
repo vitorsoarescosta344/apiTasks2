@@ -20,14 +20,11 @@ routes.post('/signin', AuthController.signin)
 
 
 routes.route('/tasks')
-    .all(Passport.authenticate())
     .get(TaskController.getTasks)
     .post(TaskController.save)
 routes.route('/tasks/:id')
-    .all(Passport.authenticate())
     .delete(TaskController.remove)
 routes.route('/tasks/:id/toggle')
-    .all(Passport.authenticate())
     .put(TaskController.toggleTask)
 
 module.exports = routes;

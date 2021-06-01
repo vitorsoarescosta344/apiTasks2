@@ -1,4 +1,4 @@
-//const { authSecret } = require('../.env')
+const { authSecret } = require('../../../.env')
 const knex = require('knex')({
     client: 'mysql',
     connection: {
@@ -13,7 +13,7 @@ const passportJwt = require('passport-jwt')
 const { Strategy, ExtractJwt } = passportJwt
 
 const params = {
-    secretOrKey: 12345678,
+    secretOrKey: authSecret,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 }
 const strategy = new Strategy(params, (payload, done) => {
@@ -34,9 +34,6 @@ const passport2 = {
     initialize: () => passport.initialize(),
     authenticate: () => passport.authenticate('jwt', { session: false })
     
-}
-class Passport {
-
 }
 
 module.exports = passport2
