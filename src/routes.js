@@ -25,7 +25,7 @@ routes.route('/tasks/:date/:userId')
 routes.post('/tasks/', TaskController.save)
 routes.route('/tasks/:id')
     .delete(TaskController.remove)
-routes.route('/tasks/:id/toggle')
+routes.route('/tasks/:id/toggle/:userId/:doneAt')
     .put(TaskController.toggleTask)
 
 module.exports = routes;

@@ -46,10 +46,18 @@ class TaskController {
             .then(_ => res.status(204).send())
             .catch(err => res.status(400).json(err))
     }
+
+    async updateTaskDoneAt (req, res, doneAt){
+        knex('tasks')
+            .where({id: req.params.id, userId: req.params.userId})
+            .update({doneAt})
+            .then(_ => res.status(204).send(), console.log(doneAt))
+            .catch(err => res.status(400).json({error: "ocorreu um erro!"}))
+    }
+
     async toggleTask(req, res) {
         knex('tasks')
-            .where({ id: req.params.id, userId: req.user.id })
-            .first()
+            .where({ id: req.params.id, userId: req.params.userId })
             .then(task => {
                 if (!task) {
                     const msg = `Task com id ${req.params.id}`
@@ -57,9 +65,14 @@ class TaskController {
                 }
 
                 const doneAt = task.doneAt ? null : new Date()
-                updateTaskDoneAt(req, res, doneAt)
+                const doneAt2 = task.doneAt2 ? false : true || task.doneAt2 ? true : false
+                knex('tasks')
+                    .where({id: req.params.id, userId: req.params.userId})
+                    .update({doneAt, doneAt2})
+                    .then(_ => res.status(204).send(), console.log(doneAt))
+                    .catch(err => res.status(400).json({error: "ocorreu um erro!"}))
             })
-            .catch(err => res.status(400).json(err))
+            //.catch(err => res.status(400).json({error: "Catch"}))
     }
 }
 
