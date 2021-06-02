@@ -39,11 +39,18 @@ class TaskController {
             .catch(err => res.status(400).json(err))
     }
 
-    async remove(req, res, doneAt) {
+    async remove(req, res) {
         knex('tasks')
-            .where({ id: req.params.io, userId: req.user.id })
-            .update({ doneAt })
-            .then(_ => res.status(204).send())
+            .where({id: req.params.id})
+            .del()
+            .then(rowsDeleted => {
+                if(rowsDeleted > 0){
+                    res.status(204).send()
+                }else{
+                    const msg = `Não foi encontradA task com id ${req.params.id}`
+                    res.status(400).send(msg) 
+                }
+            })
             .catch(err => res.status(400).json(err))
     }
 
