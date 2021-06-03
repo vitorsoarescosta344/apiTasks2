@@ -18,7 +18,6 @@ class TaskController {
             knex('tasks')
                 .where({ userId: req.params.userId })
                 .where('estimateAt', '<=', date)
-                .where('doneAt', '=', null)
                 .orderBy('estimateAt')
                 .then(tasks => res.json(tasks))
                 .catch(err => res.status(400).json(err))
