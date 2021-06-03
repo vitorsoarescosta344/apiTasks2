@@ -27,6 +27,22 @@ class TaskController {
         }
 
     }
+
+    async getTasksDone(req, res) {
+        try {
+            const date = req.params.date ? req.params.date
+                :moment().endOf('day').toDate()
+            knex('tasks')
+                .where({ userId: req.params.userId })
+                .where('estimateAt', '<=', date)
+                .orderBy('estimateAt')
+                .then(tasks => res.json(tasks))
+                .catch(err => res.status(400).json(err))
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+    }
     async save(req, res) {
         if (!req.body.desc.trim()) {
             return res.status(400).send('Descrição é um campo inválido')

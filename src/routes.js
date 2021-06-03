@@ -7,7 +7,7 @@ const cors = require('cors')
 
 const routes = Router();
 
-routes.use((req, res, next)=>{
+routes.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', '*')
     res.header('Access-Control-Allow-Methods', '*')
@@ -22,6 +22,8 @@ routes.post('/signin', AuthController.signin)
 
 routes.route('/tasks/:date/:userId')
     .get(TaskController.getTasks)
+routes.route('/tasksDone/:date/:userId')
+    .get(TaskController.getTasksDone)
 routes.post('/tasks/', TaskController.save)
 routes.route('/tasks/:id')
     .delete(TaskController.remove)
